@@ -1,0 +1,13 @@
+def merge(t1,t2): #merge-uieste datele (frecvente si lungimi totale pentru 2 esantioane de text) / Input: 2 tuple-uri de forma (Dictionar,lungime) (datele feedate de functia anterioara)
+
+    D=t1[0]
+
+    for ch in t2[0].keys():
+        if ch in D:
+            D[ch]+=t2[0][ch]
+        else:
+            D[ch]=t2[0][ch]
+
+
+    return D,t1[1]+t2[1]
+
