@@ -1,0 +1,25 @@
+import math
+
+def getFrequencies(text):
+    dict={}
+
+    for ch in text:
+        if ch in dict.keys():
+            dict[ch]+=1
+        else:
+            dict[ch]=1
+
+    return dict,len(text)
+
+def solve_One_Blocks(D,totalSize):
+
+    entropy=0
+
+    for ch in D.keys():
+
+
+        p=D[ch]/totalSize
+
+
+        entropy+=p*math.log2(1/p)
+    return entropy
