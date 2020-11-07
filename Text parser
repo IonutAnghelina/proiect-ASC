@@ -1,0 +1,55 @@
+
+import codecs
+
+def text_parser(text):
+    alphabet="aăâbcdefghiîjklmnopqrsștțuvwxyzAĂÂBCDEFGHIJKLMNOPQRSȘTȚUVWXYZ"
+
+    D=dict()
+
+    D["ă"]="@"
+    D["â"]="/"
+    D["ț"]=","
+    D["ș"]="."
+    D["î"]="|"
+    D["Ă"]="@"
+    D["Â"]="/"
+    D["Ț"]=","
+    D["Ș"]="."
+    D["Î"]="|"
+
+    for ch in alphabet:
+        if ch not in D.keys():
+            if ord(ch)>=ord('A') and ord(ch)<=ord('Z'):
+                D[ch]=chr(ord(ch)+32)
+            else:
+                D[ch]=ch
+
+    interm_text=[] #O varianta intermediara a textului in care ne raman doar literele din alfabet si spatii
+    for ch in text:
+        if ch not in alphabet:
+            interm_text.append(" ");
+        else:
+            interm_text.append(D[ch])
+
+    text2="".join(interm_text)
+
+    interm_text=text2.split(" ")
+
+    text2="".join(interm_text)
+
+   # for ch in text2:
+    #    if (ch not in alphabet) and ch not in "@/,.|":
+     #       print("0")
+    return text2
+
+fin=codecs.open("data.in","r","utf-8")
+fout=open("data.out","w")
+
+
+s=fin.read()
+
+
+
+
+print(text_parser(s),file=fout)
+
