@@ -1,0 +1,18 @@
+Srans material pentru experiment din mai multe domenii (100k litere):
+- social media/ whatsapp 30%
+- articole presa 20%
+- bloguri 10%
+- opere 20%
+- poezie 10%
+- melodii 10%
+
+Program:
+
+-scos diacritice
+-transforma toate literele in litere mici
+-vector fv pe litere -> calculat probabilitati
+-calculat H(litera) pt fiecare
+-calculat entropie
+
+-facut huffman pe litere si asociat cate un cod fiecarei litere
+-dat exemple de transformare a unui text in cod binar utilizant rezultatele de mai sus
