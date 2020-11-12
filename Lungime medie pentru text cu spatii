@@ -1,0 +1,16 @@
+def get_Average_Length(text):
+    l=text.split()
+
+    n=len(l)
+
+    sol=0
+
+    for word in l:
+        sol+=len(word)/n
+
+
+    return sol
+
+
+print(get_Average_Length("Ana are mere si pere multe"))
+    
