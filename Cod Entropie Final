@@ -1,0 +1,172 @@
+import math
+import pylab
+
+def getFrequencies(text):
+    dict={}
+
+    for ch in text:
+        if ch in dict.keys():
+            dict[ch]+=1
+        else:
+            dict[ch]=1
+
+    return dict,len(text)
+
+def solve_One_Blocks(D,totalSize):
+
+    entropy=0
+
+    for ch in D.keys():
+
+
+        p=D[ch]/totalSize
+
+
+        entropy+=p*math.log2(1/p)
+    return entropy
+
+
+def hash1(word):
+    sol=0
+    p=67
+    mod=(1e9)+7
+
+    for letter in word:
+        sol=(sol*p+ord(letter))%mod
+
+    return sol
+
+def hash2(word):
+    sol=0
+    p=71
+    mod=666013
+
+    for letter in word:
+        sol=(sol*p+ord(letter))%mod
+
+    return sol
+
+def gauss(x):
+    return x*(x+1)/2
+
+def solve_big_blocks(text,maxN):
+
+    alpha=0
+
+    maxN=min(maxN,len(text)-1) #Nu luam cuvinte de lungime mai mare decat textul
+
+    D,totalsize=getFrequencies(text) #Dictionarul cu frecventele literelor si lungimea textului
+
+    #print(D)
+
+    F=[0]*(maxN+5) #Sirul in care vom calcula aproximarile pentru entropie
+    k=[0]*(maxN+5)
+
+    F[1]=solve_One_Blocks(D,totalsize) #Solutia pentru litere
+    k[1]=F[1] #Formula generala va fi F[i]=-k[i-1]+Entropia dupa formula elementara pt cuvinte de lungime i
+
+
+    F[0]=math.log2(31) #Prin conventie, F[0] este entropia maxim posibila, anume log2(sigma)
+
+
+    l=len(text)
+
+    #C=gauss(l)
+
+    C=0
+
+    for i in range(1,maxN+1):
+       C+=(l-i+1)
+
+    alpha+=l/C
+
+
+
+    for i in range(2,maxN+1):
+        #lastdict=D
+        F[i]=0
+
+        D.clear()
+
+        totalWords=l-i+1
+
+        for j in range(0,l-i+1):
+            word=text[j:j+i]
+
+            h1=hash1(word)
+            h2=hash2(word)
+            if (h1,h2) in D:
+                D[(h1,h2)]+=1
+            else:
+                D[(h1,h2)]=1
+
+        for wordhash in D.keys():
+           # print("{} {}".format(D[wordhash],totalWords))
+
+            pword=D[wordhash]/totalWords
+           # alpha+=i*D[wordhash]/C
+            F[i]-=pword*math.log2(pword)
+
+        k[i]=F[i]
+     #   F[i]/=i
+       # F[i]-=k[i-1]
+
+
+    return F,k #F va fi entropia normala, iar F[i]-k[i-1] entropia conditionata
+
+def plot(l):
+    leng=len(l)
+
+    idx=[]
+
+    print(l)
+
+    for i in range(1,leng):
+        idx.append(i)
+
+
+
+    pylab.plot(idx,l[1:])
+
+    pylab.show()
+
+#text="Afostodatacanpovestiafostcaniciodatadinrudemariimparatestiopreafrumoasafatasieraunalaparintisimandrantoatecelecumefecioaraintresfintisilunaintrestele" #example
+
+fin=open("data.in","r")
+
+text2=fin.read()
+
+
+text=text2
+
+
+
+l,k=solve_big_blocks(text,100)
+
+while(l[-1]-k[-2]<=0):
+    l.pop()
+    k.pop()
+    
+
+print("Lungimea medie a cuvintelor este: {}".format(4.477446483180447))
+#print(alpha)
+
+  #  k.pop()
+
+
+plot(l)
+
+#print(k)
+
+#print(l[-1]-k[-2])
+
+Hl=(l[-1])/(len(l))
+
+print("Valoarea maxima a entropiei este: {}".format(l[0]))
+print("Valoarea entropiei calculata doar pe baza literelor este: {}".format(l[1]))
+print("Valoarea estimata a entropiei este: {} biti/caracter".format(Hl))
+print("Redundanta textului din input este: {}%".format(100*(1-Hl/l[0])))
+
+
+
+
